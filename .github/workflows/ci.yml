@@ -10,35 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.18'
-
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
-        with:
-          distribution: goreleaser
-          version: '~> v1'
-          args: release --snapshot --clean
-          workdir: out_snapshots
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload assets
-        uses: actions/upload-artifact@v3
-        with:
-          name: Snapshots
-          path: out_snapshots/dist/*
-
   release:
-    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -55,11 +27,10 @@ jobs:
           distribution: goreleaser
           version: '~> v1'
           args: release --clean
-          workdir: out
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload assets
         uses: actions/upload-artifact@v3
         with:
           name: Releases
-          path: out/dist/*
+          path: dist/*
