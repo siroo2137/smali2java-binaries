@@ -1,0 +1,21 @@
+project_name: smali2java
+
+builds:
+  - id: smali2java
+    main: ./smali2java.go
+    binary: smali2java
+    goos:
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - 386
+    goarm:
+      - 6
+      - 7
+    flags:
+      - -tags=netgo
+      - -ldflags=-s -w
+    env:
+      - CGO_ENABLED=0
